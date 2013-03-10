@@ -27,9 +27,6 @@ import "C"
 import "unsafe"
 
 /*
-Calling sequence:
-    gnureadline.Readline(prompt, add_hist = false) string
-
 Readline will read a line from the terminal and return it, using prompt
 as a prompt.  If prompt the  empty  string,  no  prompt  is
 issued.  The  line  returned  has  the  final  newline
