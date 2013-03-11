@@ -32,6 +32,9 @@ func main() {
 		Rl_prefer_env_winsize())
 	print_edit_mode()
 	print_insert_mode()
+	fmt.Println("History is stifled", HistoryIsStifled())
+	StifleHistory(3)
+	fmt.Println("History is stifled", HistoryIsStifled())
 	line = Readline("Enter something without history: ")
 	for i:=1; line != "quit"; i++ {
 		line = Readline(fmt.Sprintf("Enter something %d: ", i), true)

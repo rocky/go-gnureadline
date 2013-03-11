@@ -90,6 +90,11 @@ func Rl_reset_terminal(terminal_name string) int {
 	return int(C.rl_reset_terminal(c_terminal_name))
 }
 
+/* Says which editing mode readline is currently using. 1 means emacs mode;
+   0 means vi mode. */
+func Rl_editing_mode() int {
+	return int(C.rl_editing_mode)
+}
 
 // I miss Ruby's attr_reader
 
@@ -133,12 +138,6 @@ func Rl_readline_version() int {
 */
 func Rl_prefer_env_winsize() int {
 	return int(C.rl_prefer_env_winsize)
-}
-
-/* Says which editing mode readline is currently using.  1 means emacs mode;
-   0 means vi mode. */
-func Rl_editing_mode() int {
-	return int(C.rl_editing_mode)
 }
 
 /* Insert or overwrite mode for emacs mode.  1 means insert mode; 0 means
