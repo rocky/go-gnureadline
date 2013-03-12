@@ -2,7 +2,7 @@ package main
 import ( . "gnureadline"; "fmt"; "os")
 
 func print_edit_mode() {
-	if Rl_editing_mode() == 1 {
+	if Rl_editing_mode() == Emacs {
 		fmt.Println("Editing mode is emacs")
 	} else {
 		fmt.Println("Editing mode is vi")
@@ -40,10 +40,10 @@ func main() {
 		line = Readline(fmt.Sprintf("Enter something %d: ", i), true)
 		switch line {
 		case "vi":
-			Rl_editing_mode_set(0)
+			Rl_editing_mode_set(Vi)
 			print_edit_mode()
 		case "emacs":
-			Rl_editing_mode_set(1)
+			Rl_editing_mode_set(Emacs)
 			print_edit_mode()
 		case "insert":
 			Rl_insert_mode_set(1)
