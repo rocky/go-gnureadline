@@ -14,13 +14,15 @@
    along with Readline.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// This file contains things from readline/readline.h
+
 package gnureadline
 
 /*
 #cgo LDFLAGS: -lreadline
 #include <stdio.h>
 #include <readline/readline.h>
-#include <readline/history.h>
+#include <readline/history.h>  // for readline() history parameter
 #include <stdlib.h> // for free()
 */
 import "C"
@@ -112,9 +114,45 @@ func Rl_editing_mode() EditingMode {
 
 // I miss Ruby's attr_reader
 
+/* 
+ True if this is real GNU readline. (It's probably true here.)
+*/
+func Rl_gnu_readline_p() bool {
+	if (int(C.rl_gnu_readline_p) == 0) {
+		return false
+	}
+	return true
+}
+
+/*
+     If non-zero, Readline gives values found in the `LINES' and
+     `COLUMNS' environment variables greater precedence than values
+     fetched from the kernel when computing the screen dimensions.
+*/
+func Rl_prefer_env_winsize() int {
+	return int(C.rl_prefer_env_winsize)
+}
+
+/* 
+ Read keybindings and variable assignments from FILENAME 
+*/
+func Rl_read_init_file(filename string) int {
+	c_filename := C.CString(filename)
+	defer C.free(unsafe.Pointer(c_filename))
+	return int(C.rl_read_init_file(c_filename))
+}
+
 /* The version number of this revision of the library. e.g. "6.2" */
 func Rl_readline_library_version() string {
 	return C.GoString(C.rl_library_version)
+}
+
+/*
+     This variable is set to a unique name by each application using
+     Readline.  The value allows conditional parsing of the inputrc file
+*/
+func Rl_readline_name() string {
+	return C.GoString(C.rl_readline_name)
 }
 
 /*
@@ -127,11 +165,14 @@ func Rl_readline_terminal_name() string {
 }
 
 /*
-     This variable is set to a unique name by each application using
-     Readline.  The value allows conditional parsing of the inputrc file
+     Return a string representing the value of the Readline variable
+     VARIABLE.  For boolean variables, this string is either `on' or
+     `off'.
 */
-func Rl_readline_name() string {
-	return C.GoString(C.rl_readline_name)
+func Rl_variable_value(variable string) string {
+	c_variable := C.CString(variable)
+	defer C.free(unsafe.Pointer(c_variable))
+	return C.GoString(C.rl_variable_value(c_variable))
 }
 
 /*
@@ -143,15 +184,6 @@ func Rl_readline_name() string {
 */
 func Rl_readline_version() int {
 	return int(C.rl_readline_version)
-}
-
-/*
-     If non-zero, Readline gives values found in the `LINES' and
-     `COLUMNS' environment variables greater precedence than values
-     fetched from the kernel when computing the screen dimensions.
-*/
-func Rl_prefer_env_winsize() int {
-	return int(C.rl_prefer_env_winsize)
 }
 
 /* Insert or overwrite mode for emacs mode.  1 means insert mode; 0 means

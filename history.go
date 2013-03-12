@@ -17,11 +17,12 @@
    along with Readline.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// This file contains things from readline/history.h
+
 package gnureadline
 /*
 #cgo LDFLAGS: -lreadline
 #include <stdio.h>
-#include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h> // for free()
 */
