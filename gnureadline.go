@@ -90,6 +90,14 @@ func Rl_reset_terminal(terminal_name string) int {
 	return int(C.rl_reset_terminal(c_terminal_name))
 }
 
+/*  
+ Update Readline's internal screen size by reading values from the
+ kernel.
+*/
+func Rl_resize_terminal() {
+	C.rl_resize_terminal()
+}
+
 type EditingMode int
 
 const (

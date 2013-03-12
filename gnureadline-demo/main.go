@@ -53,6 +53,12 @@ func main() {
 			print_insert_mode()
 		}
 		fmt.Printf("You typed: %s\n", line)
+		fmt.Printf("Byte in history %d, position %d\n", 
+			HistoryTotalBytes(), WhereHistory())
 	}
+	fmt.Printf("History length %d\n",  HistoryLength())
+	fmt.Printf("History max entries %d\n",  HistoryMaxEntries())
+	fmt.Println("writing: deleteme.history")
+	WriteHistory("deleteme.history")
 	Rl_reset_terminal(term)
 }
