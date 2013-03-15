@@ -26,7 +26,7 @@ package gnureadline
 #include <stdlib.h> // for free()
 */
 import "C"
-import "unsafe"
+import ( "unsafe" ; "io" )
 
 /*
 Readline will read a line from the terminal and return it, using prompt
@@ -39,16 +39,19 @@ line.  By default, the line editing commands are similar to those of
 emacs.  A vi-style line editing interface is also available.
 
 */
-func Readline(prompt string add_history ... bool) string {
+func Readline(prompt string add_history ... bool) (string, error) {
 	c_prompt := C.CString(prompt)
 	defer C.free(unsafe.Pointer(c_prompt))
 	c_line := C.readline(c_prompt)
 	defer C.free(unsafe.Pointer(c_line))
+	if c_line == nil {
+		return "", io.EOF
+	}
 	if len(add_history) > 0 && add_history[0] == true {
 		C.add_history(c_line)
 	}
 		
-	return C.GoString(c_line)
+	return C.GoString(c_line), nil
 }
 
 /*

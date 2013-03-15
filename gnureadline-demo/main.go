@@ -1,5 +1,5 @@
 package main
-import ( . "gnureadline"; "fmt"; "os")
+import ( . "gnureadline"; "fmt"; "os"; "io")
 
 func print_edit_mode() {
 	if Rl_editing_mode() == Emacs {
@@ -76,9 +76,10 @@ func main() {
 	fmt.Println("Reading data/undo.inputrc")
 	Rl_read_init_file("data/undo.inputrc")
 
-	line = Readline("Enter something without history: ")
-	for i:=1; line != "quit"; i++ {
-		line = Readline(fmt.Sprintf("Enter something %d: ", i), true)
+	line, err := Readline("Enter something without history: ")
+	for i:=1; err == nil && line != "quit"; i++ {
+		line, err = Readline(fmt.Sprintf("Enter something %d: ", i), 
+				     true)
 		switch line {
 		case "vi":
 			Rl_editing_mode_set(Vi)
@@ -96,6 +97,9 @@ func main() {
 		fmt.Printf("You typed: %s\n", line)
 		fmt.Printf("Byte in history %d, position %d\n", 
 			HistoryTotalBytes(), WhereHistory())
+	}
+	if err == io.EOF { 
+		fmt.Println("Got EOF")
 	}
 	fmt.Printf("History length %d\n",  HistoryLength())
 	fmt.Printf("History max entries %d\n",  HistoryMaxEntries())
