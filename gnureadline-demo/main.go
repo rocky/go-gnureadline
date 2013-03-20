@@ -33,6 +33,12 @@ func main() {
 		Rl_readline_name())
 	fmt.Printf("rl_prefer_env_winsize is %d\n", 
 		   Rl_prefer_env_winsize())
+	fmt.Printf("history_expansion_char is %c\n", 
+		   HistoryExpansionChar())
+	fmt.Printf("history_subst_char is %c\n", 
+		   HistorySubstChar())
+	fmt.Printf("history_comment_char is %c\n", 
+		   HistoryCommentChar())
 	varlist := []string{
 			"bell_style", "comment-begin", "completion-prefix-display-length",
 			"completion-query-items", "editing-mode", "history-size",
