@@ -193,8 +193,8 @@ func Rl_readline_version() int {
 
 /* Insert or overwrite mode for emacs mode.  1 means insert mode; 0 means
    overwrite mode.  Reset to insert mode on each input line. */
-func Rl_insert_mode() int {
-	return int(C.rl_insert_mode)
+func Rl_insert_mode() bool {
+	return int(C.rl_insert_mode) == 0
 }
 
 // I miss Ruby's attr_accessor
@@ -202,14 +202,22 @@ func Rl_insert_mode() int {
 /* Set editing mode readline is currently using.  1 means emacs mode;
    0 means vi mode. */
 func Rl_editing_mode_set(new_value EditingMode) EditingMode {
+	
 	C.rl_editing_mode = C.int(new_value)
 	return EditingMode(C.rl_editing_mode)
 }
 
-/* Set insert or overwrite mode for emacs mode.  1 means insert mode; 0 means
-   overwrite mode.  Reset to insert mode on each input line. */
-func Rl_insert_mode_set(new_value int) int {
-	C.rl_insert_mode = C.int(new_value)
-	return int(C.rl_insert_mode)
+/* 
+
+Set insert or overwrite mode for emacs mode.  Pass true to set insert
+   mode, and flags to set overwrite mode.  */ 
+
+func Rl_insert_mode_set(set_insert bool) bool { 
+	if (set_insert) {
+		C.rl_insert_mode = C.int(1) 
+	} else {
+		C.rl_insert_mode = C.int(0)
+	}
+	return C.rl_insert_mode != C.int(0)
 }
 

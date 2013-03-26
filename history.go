@@ -84,7 +84,7 @@ func WhereHistory() int {
 	return int(C.where_history())
 }
 
-/* Write the current history to FILENAME.  If FILENAME is '',
+/* Write the current history to FILENAME.  If FILENAME is "",
    then write the history list to ~/.history.  Values returned
    are as in ReadHistory().  */
 func WriteHistory(filename string) int {

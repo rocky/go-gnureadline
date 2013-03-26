@@ -45,4 +45,7 @@ func TestReadline(t *testing.T) {
 	Rl_editing_mode_set(Emacs)
 	assert_equal_int(int(Emacs), int(Rl_editing_mode()),
 		"Edit mode should be set to Emacs", t)
+
+	assert_true(Rl_insert_mode_set(true), "Insert mode should be set", t)
+
 }

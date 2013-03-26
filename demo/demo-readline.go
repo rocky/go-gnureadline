@@ -12,7 +12,7 @@ func print_edit_mode() {
 }
 
 func print_insert_mode() {
-	if Rl_insert_mode() == 1 {
+	if Rl_insert_mode() {
 		fmt.Println("Insert mode on")
 	} else {
 		fmt.Println("Overwrite mode on")
@@ -83,10 +83,10 @@ func main() {
 			Rl_editing_mode_set(Emacs)
 			print_edit_mode()
 		case "insert":
-			Rl_insert_mode_set(1)
+			Rl_insert_mode_set(true)
 			print_insert_mode()
 		case "overwrite":
-			Rl_insert_mode_set(0)
+			Rl_insert_mode_set(false)
 			print_insert_mode()
 		}
 		fmt.Printf("You typed: %s\n", line)
