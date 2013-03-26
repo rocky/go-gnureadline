@@ -1,17 +1,17 @@
 /* Copyright (C) 2013 Rocky Bernstein
 
-   Readline is free software: you can redistribute it and/or modify
+   gnureadline is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Readline is distributed in the hope that it will be useful,
+   gnureadline is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with Readline.  If not, see <http://www.gnu.org/licenses/>.
+   along with gnureadline.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // This file contains things from readline/readline.h
@@ -19,6 +19,8 @@
 package gnureadline
 
 /*
+#cgo darwin CFLAGS: -I/opt/local/include
+#cgo darwin LDFLAGS: -L/opt/local/lib
 #cgo LDFLAGS: -lreadline
 #include <stdio.h>
 #include <readline/readline.h>
