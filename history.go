@@ -108,11 +108,16 @@ func UsingHistory() {
 }
 
 
-// I miss Ruby's attr_reader
+// I miss Ruby's attr_reader and attr_accessor
 
 /* The logical `base' of the history array.  It defaults to 1. */
 func HistoryBase() int {
 	return int(C.history_base)
+}
+
+func HistoryBase_(base int) int {
+	C.history_base = C.int(base)
+	return base
 }
 
 /* The number of strings currently stored in the history list. */
@@ -132,10 +137,20 @@ func HistoryExpansionChar() rune {
 	return rune(C.history_expansion_char)
 }
 
+func HistoryExpansionChar_(c rune) rune {
+	C.history_expansion_char = C.char(c) 
+	return c
+}
+
 /* The character that represents the start of a history expansion
    request.  This is usually `!'. */
 func HistorySubstChar() rune {
 	return rune(C.history_subst_char)
+}
+
+func HistorySubstChar_(c rune) rune {
+	C.history_subst_char = C.char(c)
+	return c
 }
 
 /* During tokenization, if this character is seen as the first character
@@ -144,6 +159,11 @@ func HistorySubstChar() rune {
    the interactive comment character to not be a comment delimiter. */
 func HistoryCommentChar() rune {
 	return rune(C.history_comment_char)
+}
+
+func HistoryCommentChar_(c rune) rune {
+	C.history_comment_char = C.char(c)
+	return c
 }
 
 

@@ -13,6 +13,27 @@ func assert_false(b bool, msg string, t *testing.T) {
 	}
 }
 
+func assert_equal_int(expect, got int, msg string, t *testing.T) {
+	if expect != got  {
+		t.Errorf("failed expected %d, got %d: %s\n", 
+			expect, got, msg)
+	}
+}
+
+func assert_equal_rune(expect, got rune, msg string, t *testing.T) {
+	if expect != got  {
+		t.Errorf("failed expected %c, got %c: %s\n", 
+			expect, got, msg)
+	}
+}
+
+func assert_equal_string(expect, got string, msg string, t *testing.T) {
+	if expect != got  {
+		t.Errorf("failed expected %s, got %s: %s\n", 
+			expect, got, msg)
+	}
+}
+
 func TestReadline(t *testing.T) {
 	assert_true(Rl_gnu_readline_p(), "Genuine GNU Readline", t)
 
@@ -51,8 +72,10 @@ func TestReadline(t *testing.T) {
 	}
 
 	Rl_editing_mode_set(Vi)
-	assert_true(Rl_editing_mode() == Vi, "Edit mode should be set to Vi", t)
+	assert_equal_int(int(Vi), int(Rl_editing_mode()),
+		"Edit mode should be set to Vi", t)
 	
 	Rl_editing_mode_set(Emacs)
-	assert_true(Rl_editing_mode() == Emacs, "Edit mode should be set to Emacs", t)
+	assert_equal_int(int(Emacs), int(Rl_editing_mode()),
+		"Edit mode should be set to Emacs", t)
 }
