@@ -28,26 +28,12 @@ package gnureadline
 #cgo darwin CFLAGS: -I/opt/local/include
 #cgo darwin LDFLAGS: -L/opt/local/lib
 #cgo LDFLAGS: -lreadline
-#include <stdio.h>
-#include <readline/readline.h>
-#include <stdlib.h> // for free()
 
-char* _go_readline_strarray_at(char **strarray, int idx) 
- {
-   return strarray[idx];
- }
-
- int _go_readline_strarray_len(char **strarray)
- {
-   int sz = 0;
-   while (strarray[sz] != NULL) {
-     sz += 1;
-   }
-   return sz;
- }
+#include "complete.h"
 */
 import "C"
 import "unsafe"
+import "reflect"
 
 /* 
  The list of characters that signal a break between words.
@@ -82,7 +68,12 @@ first argument is TEXT.
  
 The second is a state argument; it should be zero on the first call,
 and non-zero on subsequent calls.  It returns a NULL pointer to the
-caller when there are no more matches.  */
+caller when there are no more matches.  
+
+Note[crc] The function passing mechanism used is broken. This will only work with
+a nil entry function
+
+*/
 
 func CompletionMatches(text string, 
 	entry_func func(text string, state int) string) []string {
@@ -99,9 +90,35 @@ func CompletionMatches(text string,
 	return matches
 }
 
-//
-func SetAttemptedCompletionFunction(entry_func func(text string, 
+var attemptedCompletionFunction func(text string, start, end int) []string
+
+//export goCallAttemptedCompletionFunction
+func goCallAttemptedCompletionFunction(text *C.char, start, end C.int) **C.char {
+	matches := attemptedCompletionFunction(C.GoString(text), int(start), int(end))
+	var c_matches **C.char
+	c_matches = (**C.char)(C.malloc(C.size_t(len(matches)+1) * C.size_t(unsafe.Sizeof((*c_matches)))))
+
+	var slice []*C.char
+        header := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
+	header.Cap = len(matches) + 1
+	header.Len = len(matches) + 1
+	header.Data = uintptr(unsafe.Pointer(c_matches))
+
+	for i, m := range matches {
+		slice[i] = C.CString(m)
+	}
+	slice[len(matches)] = nil
+
+	return c_matches
+}
+
+func SetAttemptedCompletionFunction(entry_func func(text string,
 	start, end int) []string) {
-	c_entry_func := (*C.rl_completion_func_t)(unsafe.Pointer(&entry_func))
-	C.rl_attempted_completion_function = c_entry_func
+	attemptedCompletionFunction = entry_func
+	if attemptedCompletionFunction == nil {
+		C.rl_attempted_completion_function = nil
+	} else {
+		c_entry_func := (*C.rl_completion_func_t)(unsafe.Pointer(C._go_attempted_completion_function))
+		C.rl_attempted_completion_function = c_entry_func
+	}
 }
