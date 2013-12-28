@@ -22,4 +22,16 @@ func TestReadlineHistory(t *testing.T) {
 	assert_equal_rune(test_char, HistoryCommentChar_(test_char),
 		"Set HistorySubstChar", t)
 
+	AddHistory("testing")
+	assert_equal_int(1, HistoryLength(), "History length should be 1", t)
+	if err := RemoveHistory(0); err != nil {
+		assert_true(false, "Got error in removing history item 0", t)
+	}
+	if err := RemoveHistory(0); err == nil {
+		assert_true(false, "Show have gotten an error in removing empty history item 0", t)
+	}
+	ClearHistory()
+	assert_equal_int(0, HistoryLength(), "History length should be back at 0 after clearing",
+		t)
+
 }
