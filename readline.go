@@ -42,7 +42,7 @@ line.  By default, the line editing commands are similar to those of
 emacs.  A vi-style line editing interface is also available.
 
 */
-func Readline(prompt string add_history ... bool) (string, error) {
+func Readline(prompt string, add_history ... bool) (string, error) {
 	c_prompt := C.CString(prompt)
 	defer C.free(unsafe.Pointer(c_prompt))
 	c_line := C.readline(c_prompt)
