@@ -41,7 +41,7 @@ line.  By default, the line editing commands are similar to those of
 emacs.  A vi-style line editing interface is also available.
 
 */
-func Readline(prompt string add_history ... bool) (string, error) {
+func Readline(prompt string, add_history ... bool) (string, error) {
 	c_prompt := C.CString(prompt)
 	defer C.free(unsafe.Pointer(c_prompt))
 	c_line := C.readline(c_prompt)
@@ -52,7 +52,7 @@ func Readline(prompt string add_history ... bool) (string, error) {
 	if len(add_history) > 0 && add_history[0] == true {
 		C.add_history(c_line)
 	}
-		
+
 	return C.GoString(c_line), nil
 }
 
@@ -97,7 +97,7 @@ func Rl_reset_terminal(terminal_name string) int {
 	return int(C.rl_reset_terminal(c_terminal_name))
 }
 
-/*  
+/*
  Update Readline's internal screen size by reading values from the
  kernel.
 */
@@ -119,7 +119,7 @@ func Rl_editing_mode() EditingMode {
 
 // I miss Ruby's attr_reader
 
-/* 
+/*
  True if this is real GNU readline. (It's probably true here.)
 */
 func Rl_gnu_readline_p() bool {
@@ -138,8 +138,8 @@ func Rl_prefer_env_winsize() int {
 	return int(C.rl_prefer_env_winsize)
 }
 
-/* 
- Read keybindings and variable assignments from FILENAME 
+/*
+ Read keybindings and variable assignments from FILENAME
 */
 func Rl_read_init_file(filename string) int {
 	c_filename := C.CString(filename)
@@ -202,22 +202,21 @@ func Rl_insert_mode() bool {
 /* Set editing mode readline is currently using.  1 means emacs mode;
    0 means vi mode. */
 func Rl_editing_mode_set(new_value EditingMode) EditingMode {
-	
+
 	C.rl_editing_mode = C.int(new_value)
 	return EditingMode(C.rl_editing_mode)
 }
 
-/* 
+/*
 
 Set insert or overwrite mode for emacs mode.  Pass true to set insert
-   mode, and flags to set overwrite mode.  */ 
+   mode, and flags to set overwrite mode.  */
 
-func Rl_insert_mode_set(set_insert bool) bool { 
+func Rl_insert_mode_set(set_insert bool) bool {
 	if (set_insert) {
-		C.rl_insert_mode = C.int(1) 
+		C.rl_insert_mode = C.int(1)
 	} else {
 		C.rl_insert_mode = C.int(0)
 	}
 	return C.rl_insert_mode != C.int(0)
 }
-
