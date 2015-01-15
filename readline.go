@@ -28,6 +28,7 @@ package gnureadline
 #include <stdlib.h> // for free()
 */
 import "C"
+
 import ( "unsafe" ; "io" )
 
 /*

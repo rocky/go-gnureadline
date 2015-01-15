@@ -1,3 +1,6 @@
 *~
 data/deleteme.history
-
+demo/demo-bind
+demo/demo-complete
+demo/demo-history
+demo/demo-readline

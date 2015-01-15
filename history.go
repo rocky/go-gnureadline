@@ -1,4 +1,4 @@
-/* 
+/*
    GNU Readline History functions
 
    Copyright (C) 2013 Rocky Bernstein
@@ -29,6 +29,7 @@ package gnureadline
 #include <stdlib.h> // for free()
 */
 import "C"
+import "errors"
 import "unsafe"
 
 /* Place LINE at the end of the history list.
@@ -71,6 +72,20 @@ func ReadHistory(filename string) int {
 	c_filename := C.CString(filename)
 	defer C.free(unsafe.Pointer(c_filename))
 	return int(C.read_history(c_filename))
+}
+
+// RemoveHistory removes the history entry "which".
+// The removed element is free'd
+func RemoveHistory(which int) error {
+	// FIXME: interface could return histdata stuff:
+	// the timestamp and string value
+	c_hist_ent := C.remove_history(C.int(which))
+	defer C.free(unsafe.Pointer(c_hist_ent))
+	if c_hist_ent == nil {
+		return errors.New("Can't retrieve history item")
+	}
+	return nil
+
 }
 
 /* Stifle the history list, remembering only MAX number of entries. */
@@ -142,7 +157,7 @@ func HistoryExpansionChar() rune {
 
 /* Setter for HistoryExpansionChar */
 func HistoryExpansionChar_(c rune) rune {
-	C.history_expansion_char = C.char(c) 
+	C.history_expansion_char = C.char(c)
 	return c
 }
 
@@ -171,7 +186,3 @@ func HistoryCommentChar_(c rune) rune {
 	C.history_comment_char = C.char(c)
 	return c
 }
-
-
-
-
