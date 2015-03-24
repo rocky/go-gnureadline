@@ -8,5 +8,4 @@ go:
 script:
   - GOBIN=$HOME; export GOBIN
   - go build
-  - go build make_env.go
   - go test -v
