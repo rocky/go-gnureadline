@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rocky/go-gnureadline.png)](https://travis-ci.org/rocky/go-gnureadline)
+[![Build Status](https://travis-ci.org/rocky/go-gnureadline.png)](https://travis-ci.org/rocky/go-gnureadline) [![GoDoc](https://godoc.org/github.com/rocky/go-gnureadline?status.svg)](https://godoc.org/github.com/rocky/go-gnureadline)
 
 Go bindings to the [GNU Readline](http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html) library
 
