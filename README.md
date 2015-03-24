@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rocky/go-gnureadline.png)](https://travis-ci.org/rocky/go-gnureadline)
+
 Go bindings to the [GNU Readline](http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html) library
 
 This provides command-line entry, editing and command history
