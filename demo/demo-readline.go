@@ -1,3 +1,4 @@
+// #nobuild
 package main
 import (
 	"fmt"; "os"; "io"
