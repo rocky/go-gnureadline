@@ -6,6 +6,4 @@ go:
   - 1.4
 
 script:
-  - GOBIN=$HOME; export GOBIN
-  - go get
   - go test -v
