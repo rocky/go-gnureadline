@@ -1,4 +1,4 @@
-// #nobuild
+// +build ignore
 package main
 import (
 	"fmt"; "os"; "io"
