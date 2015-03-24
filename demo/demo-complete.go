@@ -1,5 +1,10 @@
 package main
-import (. "gnureadline"; "sort"; "fmt"; "strings")
+import (
+	"fmt"
+	"github.com/rocky/go-gnureadline"
+	"sort"
+	"strings"
+)
 
 var completions = []string{
 	"spoken",
@@ -25,13 +30,14 @@ var completions = []string{
 }
 
 func main() {
-	fmt.Printf("Completer word-break characters: '%s'\n", 
-		CompleterWordBreakCharacters())
-	CompleterWordBreakCharacters_("X ")
-	fmt.Printf("Completer word-break characters: '%s'\n", 
-		CompleterWordBreakCharacters())
+	fmt.Printf("Completer word-break characters: '%s'\n",
+		gnureadline.CompleterWordBreakCharacters())
+	gnureadline.CompleterWordBreakCharacters_("X ")
+	fmt.Printf("Completer word-break characters: '%s'\n",
+		gnureadline.CompleterWordBreakCharacters())
 
-	SetAttemptedCompletionFunction(func(text string, start, end int) []string {
+	gnureadline.SetAttemptedCompletionFunction(
+		func(text string, start, end int) []string {
 
 		// Binary search for the range of completions with a matching prefix
 		n := len(completions)
@@ -56,9 +62,9 @@ func main() {
 
 	var line string
 
-	line, err := Readline("something beginning with s> ")
+	line, err := gnureadline.Readline("something beginning with s> ")
 	for err == nil && line != "quit" {
-		line, err = Readline("something beginning with s> ")
+		line, err = gnureadline.Readline("something beginning with s> ")
 	}
 }
 
