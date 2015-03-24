@@ -1,4 +1,6 @@
-Go bindings for GNU Readline to get a line from a user with editing =
+Go bindings to the [GNU Readline](http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html) library
+
+This provides command-line entry, editing and command history
 
 
 Synopsis
