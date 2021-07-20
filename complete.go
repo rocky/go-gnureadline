@@ -1,4 +1,4 @@
-/* 
+/*
    GNU Readline completion functions
 
    Copyright (C) 2013 Rocky Bernstein
@@ -22,8 +22,8 @@
 /* Thanks to Sebastien Binet from which these routines were started
 from. */
 
-
 package gnureadline
+
 /*
 #cgo darwin CFLAGS: -I/opt/local/include
 #cgo darwin LDFLAGS: -L/opt/local/lib
@@ -35,11 +35,11 @@ import "C"
 import "unsafe"
 import "reflect"
 
-/* 
+/*
  The list of characters that signal a break between words.
  The default list is the contents of
  rl_basic_word_break_characters.
-  */
+*/
 func CompleterWordBreakCharacters() string {
 	cstr := C.rl_completer_word_break_characters
 	delims := C.GoString(cstr)
@@ -54,7 +54,7 @@ func CompleterWordBreakCharacters_(break_chars string) {
 	C.rl_completer_word_break_characters = p
 }
 
-/* 
+/*
 
 Return a slice which is a list of completions for TEXT.  If there are
 no completions, return [].
@@ -62,20 +62,20 @@ no completions, return [].
 The first entry in the returned array is the substitution for TEXT.
 The remaining entries are the possible completions.  The array is
 terminated with a NULL pointer.
- 
+
 ENTRY_FUNCTION is a function of two args, and returns a (char *).  The
 first argument is TEXT.
- 
+
 The second is a state argument; it should be zero on the first call,
 and non-zero on subsequent calls.  It returns a NULL pointer to the
-caller when there are no more matches.  
+caller when there are no more matches.
 
 Note[crc] The function passing mechanism used is broken. This will only work with
 a nil entry function
 
 */
 
-func CompletionMatches(text string, 
+func CompletionMatches(text string,
 	entry_func func(text string, state int) string) []string {
 	c_text := C.CString(text)
 	defer C.free(unsafe.Pointer(c_text))
@@ -84,7 +84,7 @@ func CompletionMatches(text string,
 	n_matches := int(C._go_readline_strarray_len(c_matches))
 	matches := make([]string, n_matches)
 	for i := 0; i < n_matches; i++ {
-		matches[i] = C.GoString(C._go_readline_strarray_at(c_matches, 
+		matches[i] = C.GoString(C._go_readline_strarray_at(c_matches,
 			C.int(i)))
 	}
 	return matches
@@ -99,7 +99,7 @@ func goCallAttemptedCompletionFunction(text *C.char, start, end C.int) **C.char 
 	c_matches = (**C.char)(C.malloc(C.size_t(len(matches)+1) * C.size_t(unsafe.Sizeof((*c_matches)))))
 
 	var slice []*C.char
-        header := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
+	header := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
 	header.Cap = len(matches) + 1
 	header.Len = len(matches) + 1
 	header.Data = uintptr(unsafe.Pointer(c_matches))
@@ -121,4 +121,8 @@ func SetAttemptedCompletionFunction(entry_func func(text string,
 		c_entry_func := (*C.rl_completion_func_t)(unsafe.Pointer(C._go_attempted_completion_function))
 		C.rl_attempted_completion_function = c_entry_func
 	}
+}
+
+func LineBuffer() string {
+	return C.GoString(C.rl_line_buffer)
 }
